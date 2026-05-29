@@ -10,9 +10,6 @@ import {
   type KeyboardEvent,
   type MouseEvent,
 } from "react";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import CloseIcon from "@mui/icons-material/Close";
-import { Box, FormControl, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 import { InputActions, InputLabel } from "../DateRangePicker/styled";
 import {
   applyMask,
@@ -152,67 +149,50 @@ export const DateInput = forwardRef<HTMLDivElement, DateInputProps>(
     };
 
     return (
-      <Box
+      <div
         ref={ref}
-        sx={{
-          display: "inline-flex",
-          flexDirection: "column",
-          gap: 0.5,
-          opacity: disabled ? 0.6 : 1,
-          pointerEvents: disabled ? "none" : "auto",
-        }}
+        className="dp-input-group dp-single-input-group"
+        data-disabled={disabled ? "true" : undefined}
       >
         <InputLabel htmlFor={inputId}>{label}</InputLabel>
-        <FormControl focused={isOpen} size="small">
-          <OutlinedInput
-            inputRef={inputRef}
+        <div className="dp-input-shell" data-active={isOpen ? "true" : undefined}>
+          <input
+            ref={inputRef}
             id={inputId}
+            className="dp-input"
             value={text}
             placeholder={effectiveMask}
-            notched={false}
-            label={undefined}
             disabled={disabled}
             onChange={handleChange}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
-            inputProps={{
-              inputMode,
-              onClick: handleInputClick,
-            }}
-            endAdornment={
-              <InputAdornment position="end" sx={{ gap: 0.25, ml: 0 }}>
-                <InputActions>
-                  {value && (
-                    <IconButton
-                      size="small"
-                      aria-label="Clear date"
-                      onClick={onClear}
-                      sx={{ color: "text.secondary" }}
-                    >
-                      <CloseIcon sx={{ fontSize: 16 }} />
-                    </IconButton>
-                  )}
-                  <IconButton
-                    size="small"
-                    aria-label="Open calendar"
-                    onClick={onOpen}
-                    sx={{ color: "text.secondary" }}
-                  >
-                    <CalendarTodayIcon sx={{ fontSize: 16 }} />
-                  </IconButton>
-                </InputActions>
-              </InputAdornment>
-            }
-            sx={{
-              fontSize: 13.5,
-              fontFamily: "inherit",
-              minWidth: 280,
-              "& input": { padding: "6px 12px", cursor: "text" },
-              "& input::placeholder": { color: "text.disabled", opacity: 1 },
-            }}
+            inputMode={inputMode}
+            onClick={handleInputClick}
           />
-        </FormControl>
-      </Box>
+          <InputActions>
+            {value && (
+              <button
+                type="button"
+                className="dp-icon-button"
+                aria-label="Clear date"
+                disabled={disabled}
+                onClick={onClear}
+              >
+                ×
+              </button>
+            )}
+            <button
+              type="button"
+              className="dp-icon-button"
+              aria-label="Open calendar"
+              disabled={disabled}
+              onClick={onOpen}
+            >
+              ◷
+            </button>
+          </InputActions>
+        </div>
+      </div>
     );
   },
 );

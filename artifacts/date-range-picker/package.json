@@ -1,7 +1,7 @@
 {
   "name": "dpicker",
   "version": "0.1.0",
-  "description": "Lightweight, customizable React date and date-range pickers built with MUI, React Aria, and @internationalized/date.",
+  "description": "Lightweight, customizable React date and date-range pickers built with CSS and @internationalized/date.",
   "license": "MIT",
   "author": "fuji2003",
   "homepage": "https://fuji2003.github.io/DPicker/",
@@ -18,14 +18,15 @@
     "date-picker",
     "date-range-picker",
     "calendar",
-    "mui",
-    "react-aria",
+    "css",
     "typescript",
     "temporal"
   ],
   "private": false,
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -44,7 +45,8 @@
       "types": "./dist/date-range-picker.d.ts",
       "import": "./dist/date-range-picker.js",
       "require": "./dist/date-range-picker.cjs"
-    }
+    },
+    "./styles.css": "./dist/styles.css"
   },
   "files": [
     "dist",
@@ -59,30 +61,18 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "peerDependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
     "@internationalized/date": "^3.12.0",
-    "@mui/icons-material": "^7.3.0",
-    "@mui/material": "^7.3.0",
     "react": ">=18",
-    "react-aria": "^3.48.0",
-    "react-dom": ">=18",
-    "react-stately": "^3.46.0"
+    "react-dom": ">=18"
   },
   "devDependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
     "@internationalized/date": "^3.12.1",
-    "@mui/icons-material": "^7.3.10",
-    "@mui/material": "^7.3.10",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "catalog:",
     "react": "catalog:",
-    "react-aria": "^3.48.0",
     "react-dom": "catalog:",
-    "react-stately": "^3.46.0",
     "typescript": "~5.9.2",
     "vite": "catalog:"
   }

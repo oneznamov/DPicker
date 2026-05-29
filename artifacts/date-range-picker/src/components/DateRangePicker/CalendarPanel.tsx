@@ -1,7 +1,4 @@
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { CalendarDate } from "@internationalized/date";
-import { Box } from "@mui/material";
 import type { CalendarView, DateOnlyRange } from "./types";
 import { CalendarGrid } from "./CalendarGrid";
 import { MonthView, YearView } from "./MonthYearView";
@@ -108,24 +105,22 @@ export function CalendarPanel(props: CalendarPanelProps) {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
+    <div className="dp-calendar-panel">
       <CalendarHeader>
         <NavButton
-          size="small"
           onClick={handlePrev}
           hidden={!showLeftNav}
           aria-label="Previous"
         >
-          <ChevronLeftIcon fontSize="small" />
+          <span aria-hidden="true">‹</span>
         </NavButton>
         <CalendarHeaderTitle>{renderTitle()}</CalendarHeaderTitle>
         <NavButton
-          size="small"
           onClick={handleNext}
           hidden={!showRightNav}
           aria-label="Next"
         >
-          <ChevronRightIcon fontSize="small" />
+          <span aria-hidden="true">›</span>
         </NavButton>
       </CalendarHeader>
 
@@ -162,6 +157,6 @@ export function CalendarPanel(props: CalendarPanelProps) {
           onSelect={onSelectYear}
         />
       )}
-    </Box>
+    </div>
   );
 }

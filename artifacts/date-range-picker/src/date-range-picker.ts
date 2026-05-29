@@ -1,3 +1,5 @@
+import "./styles.css";
+
 export { DateRangePicker, defaultPresets } from "./components/DateRangePicker";
 export type {
   DateRange,

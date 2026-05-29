@@ -1,7 +1,7 @@
 # DPicker
 
 DPicker is a lightweight, customizable React date picker and date-range picker
-for apps that want typed date values, accessible calendar behavior, and MUI v7
+for apps that want typed date values, accessible calendar behavior, and CSS3
 styling without a large date-picker framework.
 
 It ships two components:
@@ -9,21 +9,27 @@ It ships two components:
 - `DatePicker` for a single date or date-time value.
 - `DateRangePicker` for an inclusive start/end range with optional presets.
 
-The demo is built for GitHub Pages at `https://fuji2003.github.io/DPicker/`.
+<p><a href="https://fuji2003.github.io/DPicker/"><strong>Play live demo</strong></a></p>
 
 ## Installation
 
 ```bash
-npm install dpicker @mui/material @mui/icons-material @emotion/react @emotion/styled @internationalized/date react-aria react-stately
+npm install dpicker @internationalized/date
 ```
 
 React and React DOM are peer dependencies. DPicker works with React 18 or newer.
+Import the stylesheet once in your app:
+
+```tsx
+import "dpicker/styles.css";
+```
 
 ## Quick Start
 
 ```tsx
 import { useState } from "react";
 import { DateRangePicker, type DateRange } from "dpicker";
+import "dpicker/styles.css";
 
 export function BookingDates() {
   const [range, setRange] = useState<DateRange | null>(null);
@@ -44,6 +50,7 @@ For a single date:
 ```tsx
 import { useState } from "react";
 import { DatePicker, type DateValue } from "dpicker";
+import "dpicker/styles.css";
 
 export function AppointmentDate() {
   const [date, setDate] = useState<DateValue | null>(null);
@@ -67,6 +74,7 @@ import {
   type DateRangePickerProps,
   type PresetDefinition,
 } from "dpicker";
+import "dpicker/styles.css";
 ```
 
 For the smallest import path, use direct subpath exports:
@@ -78,6 +86,7 @@ import {
   defaultPresets,
   type DateRange,
 } from "dpicker/date-range-picker";
+import "dpicker/styles.css";
 ```
 
 Values use `@internationalized/date`:
@@ -171,29 +180,62 @@ Examples: `MM/DD/YYYY`, `DD/MM/YYYY`, `YYYY-MM-DD`, `DD.MM.YYYY`,
 
 ## Accessibility
 
-DPicker uses React Aria overlay state and keyboard-friendly calendar grids.
-Users can type into masked inputs, open the calendar from the icon button, move
-through days with arrow keys, jump by month or year with PageUp/PageDown, use
-Home/End for week boundaries, press Enter or Space to select, and press Escape
-to close.
+DPicker uses semantic controls, ARIA dialog attributes, outside-click handling,
+Escape handling, and keyboard-friendly calendar grids. Users can type into
+masked inputs, open the calendar from the icon button, move through days with
+arrow keys, jump by month or year with PageUp/PageDown, use Home/End for week
+boundaries, press Enter or Space to select, and press Escape to close.
 
 ## Styling and Customization
 
-The components are styled with MUI v7 `styled()` primitives, so they inherit
-your MUI theme. Use normal MUI theming for typography, color, shape, and density.
-Labels, locale, input masks, presets, min/max dates, disabled state, outside
-days, time picking, and hover preview behavior are all controlled by props.
+The components ship a plain CSS3 stylesheet at `dpicker/styles.css`. You can
+import it as-is, override the `.dp-*` classes in your app stylesheet, or copy
+the source CSS if you need full control. Labels, locale, input masks, presets,
+min/max dates, disabled state, outside days, time picking, and hover preview
+behavior are all controlled by props.
 
 ## Package Size and Tree Shaking
 
-DPicker publishes side-effect-free ESM and CJS builds. The package declares
-`"sideEffects": false`, keeps React, MUI, Emotion, React Aria, React Stately, and
-`@internationalized/date` as peer dependencies, and exposes direct picker
-entrypoints so bundlers can include only the picker you import.
+DPicker publishes ESM and CJS builds with direct picker entrypoints. JavaScript
+modules stay tree-shakable, while CSS is explicitly preserved through
+`"sideEffects": ["**/*.css"]`. React, React DOM, and `@internationalized/date`
+are peer dependencies and are not bundled into the package.
 
 Use `dpicker/date-picker` when an app only needs the single date picker, and
 `dpicker/date-range-picker` when an app only needs the range picker. The root
 `dpicker` export remains available for apps that want both from one import.
+
+Built package size from `pnpm --filter dpicker build`:
+
+| Import path | ESM JS | gzip JS | CSS | gzip CSS |
+| --- | ---: | ---: | ---: | ---: |
+| `dpicker/date-picker` | 29.35 kB | 8.20 kB | 7.02 kB | 1.85 kB |
+| `dpicker/date-range-picker` | 36.51 kB | 9.60 kB | 7.02 kB | 1.85 kB |
+| `dpicker` | 44.74 kB | 12.18 kB | 7.02 kB | 1.85 kB |
+
+The JS numbers include shared generated chunks used by each import path. CSS is
+listed separately because consumers import `dpicker/styles.css` once.
+
+## Dependencies
+
+Runtime peer dependencies:
+
+| Package | Why it is needed |
+| --- | --- |
+| `react` | Component rendering and hooks. |
+| `react-dom` | React app rendering in the browser. |
+| `@internationalized/date` | Calendar date values, date-time values, date math, and locale-aware calendar behavior. |
+
+Development/build dependencies used by this repository:
+
+| Package | Why it is needed |
+| --- | --- |
+| `@vitejs/plugin-react` | Vite React transform for demo and library builds. |
+| `@types/node` | TypeScript types for build configuration. |
+| `@types/react` | TypeScript React types. |
+| `@types/react-dom` | TypeScript React DOM types. |
+| `typescript` | Type checking and declaration output. |
+| `vite` | Demo build and library bundling. |
 
 ## Using DPicker with LLMs
 
@@ -204,12 +246,14 @@ explicitly. This avoids common mistakes such as treating the value as a native
 Copy this context into your LLM prompt:
 
 ```text
-Use the npm package dpicker. Import DatePicker or DateRangePicker from "dpicker".
-The selected value is not a JavaScript Date. DatePicker uses DateValue | null,
-where DateValue is CalendarDate or CalendarDateTime from @internationalized/date.
-DateRangePicker uses DateRange | null, where DateRange has { start, end }.
-Use controlled React state, pass value and onChange, and format or convert the
-value only at application boundaries.
+Use the npm package dpicker. Import DatePicker or DateRangePicker from "dpicker",
+or use "dpicker/date-picker" and "dpicker/date-range-picker" for direct
+tree-shaking-friendly imports. Import "dpicker/styles.css" once near the app
+root. The selected value is not a JavaScript Date. DatePicker uses
+DateValue | null, where DateValue is CalendarDate or CalendarDateTime from
+@internationalized/date. DateRangePicker uses DateRange | null, where DateRange
+has { start, end }. Use controlled React state, pass value and onChange, and
+format or convert the value only at application boundaries.
 ```
 
 Example LLM task:
@@ -236,9 +280,13 @@ backend contract explicitly requires a timezone-aware instant.
 - Tree-shaking-friendly exports: import one picker from a direct subpath.
 - Customizable behavior: labels, masks, locale, presets, time mode, bounds, and
   disabled dates are all props.
-- MUI-native styling: components fit into existing MUI themes without a separate
-  design system.
+- CSS3 styling: import the default stylesheet once, then override `.dp-*`
+  classes for product-specific visuals.
 - Accessible interactions: keyboard navigation and overlay behavior are built in.
+- Minimal dependency surface: React, React DOM, and `@internationalized/date` are
+  the only peer dependencies.
+- Framework-friendly React usage: the pickers work in Vite, Next.js, Remix, and
+  other React app stacks that can import CSS.
 - Typed date model: `@internationalized/date` keeps calendar dates distinct from
   native `Date` instants.
 - LLM-friendly API: small exports and explicit value types make generated

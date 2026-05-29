@@ -1,21 +1,5 @@
 import { useState } from "react";
-import {
-  Box,
-  Container,
-  Paper,
-  Typography,
-  Stack,
-  Switch,
-  FormControlLabel,
-  Divider,
-  Chip,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "@mui/material";
-import {
-  CalendarDateTime,
-  toCalendarDate,
-} from "@internationalized/date";
+import { CalendarDateTime, toCalendarDate } from "@internationalized/date";
 import { DateRangePicker } from "@/components/DateRangePicker";
 import type { DateRange } from "@/components/DateRangePicker";
 import { DatePicker } from "@/components/DatePicker";
@@ -40,9 +24,9 @@ const LOCALES: { value: string; label: string }[] = [
   { value: "en-US", label: "English (US)" },
   { value: "en-GB", label: "English (UK)" },
   { value: "de-DE", label: "Deutsch" },
-  { value: "fr-FR", label: "Français" },
-  { value: "es-ES", label: "Español" },
-  { value: "ja-JP", label: "日本語" },
+  { value: "fr-FR", label: "Francais" },
+  { value: "es-ES", label: "Espanol" },
+  { value: "ja-JP", label: "Japanese" },
 ];
 
 function formatValue(d: DateValue): string {
@@ -70,214 +54,125 @@ export default function Home() {
   const mask = masks[Math.min(maskIndex, masks.length - 1)];
 
   return (
-    <Box sx={{ minHeight: "100vh", py: { xs: 4, md: 6 } }}>
-      <Container maxWidth="md">
-        <Stack spacing={3}>
-          <Box>
-            <Typography
-              variant="h4"
-              sx={{ fontWeight: 700, letterSpacing: -0.5 }}
-            >
-              Date Pickers
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{ color: "text.secondary", mt: 1 }}
-            >
-              MUI v7 + React Aria + <code>@internationalized/date</code>.
-              Range picker and single-date picker share the same calendar,
-              localization, masked input and keyboard logic.
-            </Typography>
-          </Box>
+    <main className="dp-demo-page">
+      <div className="dp-demo-container">
+        <div className="dp-demo-stack">
+          <header className="dp-demo-header">
+            <h1>Date Pickers</h1>
+            <p>
+              React + CSS + <code>@internationalized/date</code>. Range picker
+              and single-date picker share the same calendar, localization,
+              masked input and keyboard logic.
+            </p>
+          </header>
 
-          {/* ------------------------ Shared options ------------------------ */}
-          <Paper
-            elevation={0}
-            sx={{
-              p: 3,
-              border: "1px solid",
-              borderColor: "divider",
-              borderRadius: 2,
-            }}
-          >
-            <Stack spacing={2}>
-              <Typography
-                variant="overline"
-                sx={{ color: "text.secondary", fontWeight: 600 }}
-              >
+          <section className="dp-demo-panel" aria-labelledby="demo-options">
+            <div className="dp-demo-panel-stack">
+              <span className="dp-demo-overline" id="demo-options">
                 Options
-              </Typography>
+              </span>
 
-              <Stack direction="row" spacing={3} flexWrap="wrap" rowGap={1}>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={showTime}
-                      onChange={(e) => {
-                        setShowTime(e.target.checked);
-                        setRange(null);
-                        setSingle(null);
-                      }}
-                      size="small"
-                    />
-                  }
-                  label={<Typography variant="body2">Time picker</Typography>}
-                />
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={showPresets}
-                      onChange={(e) => setShowPresets(e.target.checked)}
-                      size="small"
-                    />
-                  }
-                  label={
-                    <Typography variant="body2">
-                      Presets (range only)
-                    </Typography>
-                  }
-                />
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={showOutsideDays}
-                      onChange={(e) => setShowOutsideDays(e.target.checked)}
-                      size="small"
-                    />
-                  }
-                  label={
-                    <Typography variant="body2">Show outside days</Typography>
-                  }
-                />
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={disablePast}
-                      onChange={(e) => {
-                        setDisablePast(e.target.checked);
-                        setRange(null);
-                        setSingle(null);
-                      }}
-                      size="small"
-                    />
-                  }
-                  label={
-                    <Typography variant="body2">Disable past dates</Typography>
-                  }
-                />
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={showHoverPreview}
-                      onChange={(e) => setShowHoverPreview(e.target.checked)}
-                      size="small"
-                    />
-                  }
-                  label={
-                    <Typography variant="body2">Hover preview in inputs</Typography>
-                  }
-                />
-              </Stack>
+              <div className="dp-demo-control-row">
+                <label className="dp-demo-switch">
+                  <input
+                    type="checkbox"
+                    checked={showTime}
+                    onChange={(e) => {
+                      setShowTime(e.target.checked);
+                      setRange(null);
+                      setSingle(null);
+                    }}
+                  />
+                  <span>Time picker</span>
+                </label>
+                <label className="dp-demo-switch">
+                  <input
+                    type="checkbox"
+                    checked={showPresets}
+                    onChange={(e) => setShowPresets(e.target.checked)}
+                  />
+                  <span>Presets (range only)</span>
+                </label>
+                <label className="dp-demo-switch">
+                  <input
+                    type="checkbox"
+                    checked={showOutsideDays}
+                    onChange={(e) => setShowOutsideDays(e.target.checked)}
+                  />
+                  <span>Show outside days</span>
+                </label>
+                <label className="dp-demo-switch">
+                  <input
+                    type="checkbox"
+                    checked={disablePast}
+                    onChange={(e) => {
+                      setDisablePast(e.target.checked);
+                      setRange(null);
+                      setSingle(null);
+                    }}
+                  />
+                  <span>Disable past dates</span>
+                </label>
+                <label className="dp-demo-switch">
+                  <input
+                    type="checkbox"
+                    checked={showHoverPreview}
+                    onChange={(e) => setShowHoverPreview(e.target.checked)}
+                  />
+                  <span>Hover preview in inputs</span>
+                </label>
+              </div>
 
-              <Box>
-                <Typography
-                  variant="caption"
-                  sx={{
-                    color: "text.secondary",
-                    fontWeight: 500,
-                    mb: 0.75,
-                    display: "block",
-                  }}
-                >
-                  Locale
-                </Typography>
-                <ToggleButtonGroup
-                  value={locale}
-                  exclusive
-                  size="small"
-                  onChange={(_, v) => v && setLocale(v)}
-                  sx={{ flexWrap: "wrap" }}
-                >
+              <div>
+                <span className="dp-demo-option-label">Locale</span>
+                <div className="dp-demo-toggle-row" role="group" aria-label="Locale">
                   {LOCALES.map((l) => (
-                    <ToggleButton
+                    <button
+                      className="dp-demo-toggle"
+                      data-active={locale === l.value}
                       key={l.value}
-                      value={l.value}
-                      sx={{ textTransform: "none", py: 0.5 }}
+                      onClick={() => setLocale(l.value)}
+                      type="button"
                     >
                       {l.label}
-                    </ToggleButton>
+                    </button>
                   ))}
-                </ToggleButtonGroup>
-              </Box>
+                </div>
+              </div>
 
-              <Box>
-                <Typography
-                  variant="caption"
-                  sx={{
-                    color: "text.secondary",
-                    fontWeight: 500,
-                    mb: 0.75,
-                    display: "block",
-                  }}
-                >
-                  Input mask
-                </Typography>
-                <ToggleButtonGroup
-                  value={maskIndex}
-                  exclusive
-                  size="small"
-                  onChange={(_, v) =>
-                    typeof v === "number" && setMaskIndex(v)
-                  }
-                  sx={{ flexWrap: "wrap" }}
+              <div>
+                <span className="dp-demo-option-label">Input mask</span>
+                <div
+                  className="dp-demo-toggle-row"
+                  role="group"
+                  aria-label="Input mask"
                 >
                   {masks.map((m, i) => (
-                    <ToggleButton
+                    <button
+                      className="dp-demo-toggle dp-demo-toggle-mono"
+                      data-active={maskIndex === i}
                       key={m}
-                      value={i}
-                      sx={{
-                        textTransform: "none",
-                        py: 0.5,
-                        fontFamily: "monospace",
-                      }}
+                      onClick={() => setMaskIndex(i)}
+                      type="button"
                     >
                       {m}
-                    </ToggleButton>
+                    </button>
                   ))}
-                </ToggleButtonGroup>
-              </Box>
-            </Stack>
-          </Paper>
+                </div>
+              </div>
+            </div>
+          </section>
 
-          {/* ------------------------ Range picker ------------------------ */}
-          <Paper
-            elevation={0}
-            sx={{
-              p: 3,
-              border: "1px solid",
-              borderColor: "divider",
-              borderRadius: 2,
-            }}
-          >
-            <Stack spacing={2}>
-              <Box>
-                <Typography
-                  variant="overline"
-                  sx={{ color: "text.secondary", fontWeight: 600 }}
-                >
+          <section className="dp-demo-panel" aria-labelledby="range-picker-demo">
+            <div className="dp-demo-panel-stack">
+              <div>
+                <span className="dp-demo-overline" id="range-picker-demo">
                   Date range picker
-                </Typography>
-                <Typography
-                  variant="caption"
-                  sx={{
-                    color: "text.secondary",
-                    mt: 0.25,
-                    display: "block",
-                  }}
-                >
+                </span>
+                <p className="dp-demo-caption">
                   Two calendars, optional presets, range hover preview.
-                </Typography>
-              </Box>
+                </p>
+              </div>
 
               <DateRangePicker
                 value={range}
@@ -293,85 +188,41 @@ export default function Home() {
                 showHoverPreview={showHoverPreview}
               />
 
-              <Typography
-                variant="caption"
-                sx={{ color: "text.secondary", display: "block" }}
-              >
-                Type directly using the mask above (digits auto-insert
-                separators), or open the calendar. Inside the calendar use
-                ←↑→↓, PageUp/PageDown (Shift = year), Home/End, Enter to pick,
-                Esc to close.
-              </Typography>
+              <p className="dp-demo-caption">
+                Type directly using the mask above, or open the calendar. Inside
+                the calendar use arrow keys, PageUp/PageDown (Shift = year),
+                Home/End, Enter to pick, and Esc to close.
+              </p>
 
-              <Box>
-                <Typography
-                  variant="caption"
-                  sx={{
-                    color: "text.secondary",
-                    fontWeight: 500,
-                    mb: 1,
-                    display: "block",
-                  }}
-                >
-                  Selected value
-                </Typography>
+              <div>
+                <span className="dp-demo-option-label">Selected value</span>
                 {range ? (
-                  <Stack direction="row" spacing={1} flexWrap="wrap">
-                    <Chip
-                      label={`Start: ${formatValue(range.start)}`}
-                      size="small"
-                      color="primary"
-                      variant="outlined"
-                    />
-                    <Chip
-                      label={`End: ${formatValue(range.end)}`}
-                      size="small"
-                      color="primary"
-                      variant="outlined"
-                    />
-                  </Stack>
+                  <div className="dp-demo-chip-row">
+                    <span className="dp-demo-chip">
+                      Start: {formatValue(range.start)}
+                    </span>
+                    <span className="dp-demo-chip">
+                      End: {formatValue(range.end)}
+                    </span>
+                  </div>
                 ) : (
-                  <Typography
-                    variant="body2"
-                    sx={{ color: "text.secondary", fontStyle: "italic" }}
-                  >
-                    No range selected
-                  </Typography>
+                  <p className="dp-demo-empty">No range selected</p>
                 )}
-              </Box>
-            </Stack>
-          </Paper>
+              </div>
+            </div>
+          </section>
 
-          {/* ------------------------ Single picker ------------------------ */}
-          <Paper
-            elevation={0}
-            sx={{
-              p: 3,
-              border: "1px solid",
-              borderColor: "divider",
-              borderRadius: 2,
-            }}
-          >
-            <Stack spacing={2}>
-              <Box>
-                <Typography
-                  variant="overline"
-                  sx={{ color: "text.secondary", fontWeight: 600 }}
-                >
+          <section className="dp-demo-panel" aria-labelledby="single-picker-demo">
+            <div className="dp-demo-panel-stack">
+              <div>
+                <span className="dp-demo-overline" id="single-picker-demo">
                   Single date picker
-                </Typography>
-                <Typography
-                  variant="caption"
-                  sx={{
-                    color: "text.secondary",
-                    mt: 0.25,
-                    display: "block",
-                  }}
-                >
-                  One calendar, no presets — same masking, localization, and
-                  keyboard navigation as the range picker.
-                </Typography>
-              </Box>
+                </span>
+                <p className="dp-demo-caption">
+                  One calendar, no presets. It uses the same masking,
+                  localization, and keyboard navigation as the range picker.
+                </p>
+              </div>
 
               <DatePicker
                 value={single}
@@ -384,40 +235,22 @@ export default function Home() {
                 label="Pick a date"
               />
 
-              <Divider />
+              <div className="dp-divider" />
 
-              <Box>
-                <Typography
-                  variant="caption"
-                  sx={{
-                    color: "text.secondary",
-                    fontWeight: 500,
-                    mb: 1,
-                    display: "block",
-                  }}
-                >
-                  Selected value
-                </Typography>
+              <div>
+                <span className="dp-demo-option-label">Selected value</span>
                 {single ? (
-                  <Chip
-                    label={formatValue(single)}
-                    size="small"
-                    color="primary"
-                    variant="outlined"
-                  />
+                  <div className="dp-demo-chip-row">
+                    <span className="dp-demo-chip">{formatValue(single)}</span>
+                  </div>
                 ) : (
-                  <Typography
-                    variant="body2"
-                    sx={{ color: "text.secondary", fontStyle: "italic" }}
-                  >
-                    No date selected
-                  </Typography>
+                  <p className="dp-demo-empty">No date selected</p>
                 )}
-              </Box>
-            </Stack>
-          </Paper>
-        </Stack>
-      </Container>
-    </Box>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
   );
 }

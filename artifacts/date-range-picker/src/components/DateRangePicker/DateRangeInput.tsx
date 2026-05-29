@@ -10,9 +10,6 @@ import {
   type KeyboardEvent,
   type MouseEvent,
 } from "react";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import CloseIcon from "@mui/icons-material/Close";
-import { Box, FormControl, IconButton, InputAdornment, OutlinedInput } from "@mui/material";
 import { InputActions, InputLabel } from "./styled";
 import type { DateOnlyRange, DateRange, DateValue } from "./types";
 import {
@@ -233,112 +230,78 @@ export const DateRangeInput = forwardRef<HTMLDivElement, DateRangeInputProps>(
       ? formatWithMask(effectiveHoverRange.end, effectiveMask, locale)
       : endText;
 
-    // Shared sx for each OutlinedInput — keeps font consistent.
-    const inputSx = {
-      fontSize: 13.5,
-      fontFamily: "inherit",
-      "& input": { padding: "6px 12px", cursor: "text" },
-      "& input::placeholder": { color: "text.disabled", opacity: 1 },
-    } as const;
-
     return (
-      <Box
+      <div
         ref={ref}
-        sx={{
-          display: "flex",
-          alignItems: "flex-end",
-          minWidth: 320,
-          opacity: disabled ? 0.6 : 1,
-          pointerEvents: disabled ? "none" : "auto",
-        }}
+        className="dp-range-input"
+        data-disabled={disabled ? "true" : undefined}
       >
-        {/* ── Start field ── */}
-        <Box sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 0.5 }}>
+        <div className="dp-input-group dp-range-input-start">
           <InputLabel htmlFor={startId}>{startLabel}</InputLabel>
-          <FormControl
-            focused={activeField === "start"}
-            size="small"
-            sx={{ width: "100%" }}
+          <div
+            className="dp-input-shell"
+            data-active={activeField === "start" ? "true" : undefined}
           >
-            <OutlinedInput
-              inputRef={startInputRef}
+            <input
+              ref={startInputRef}
               id={startId}
+              className="dp-input"
               value={displayStartText}
               placeholder={placeholder}
-              notched={false}
-              label={undefined}
+              disabled={disabled}
               onChange={handleChange("start")}
               onBlur={handleBlur("start")}
               onKeyDown={handleKeyDown("start")}
-              inputProps={{
-                inputMode,
-                onClick: handleInputClick("start"),
-              }}
-              sx={{
-                ...inputSx,
-                borderTopRightRadius: 0,
-                borderBottomRightRadius: 0,
-                "& .MuiOutlinedInput-notchedOutline": { borderRight: "none" },
-              }}
+              inputMode={inputMode}
+              onClick={handleInputClick("start")}
             />
-          </FormControl>
-        </Box>
+          </div>
+        </div>
 
-        {/* ── End field ── */}
-        <Box sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 0.5 }}>
+        <div className="dp-input-group dp-range-input-end">
           <InputLabel htmlFor={endId}>{endLabel}</InputLabel>
-          <FormControl
-            focused={activeField === "end"}
-            size="small"
-            sx={{ width: "100%" }}
+          <div
+            className="dp-input-shell"
+            data-active={activeField === "end" ? "true" : undefined}
           >
-            <OutlinedInput
-              inputRef={endInputRef}
+            <input
+              ref={endInputRef}
               id={endId}
+              className="dp-input"
               value={displayEndText}
               placeholder={placeholder}
-              notched={false}
-              label={undefined}
+              disabled={disabled}
               onChange={handleChange("end")}
               onBlur={handleBlur("end")}
               onKeyDown={handleKeyDown("end")}
-              inputProps={{
-                inputMode,
-                onClick: handleInputClick("end"),
-              }}
-              endAdornment={
-                <InputAdornment position="end" sx={{ gap: 0.25, ml: 0 }}>
-                  <InputActions>
-                    {range && (
-                      <IconButton
-                        size="small"
-                        aria-label="Clear date range"
-                        onClick={onClear}
-                        sx={{ color: "text.secondary" }}
-                      >
-                        <CloseIcon sx={{ fontSize: 16 }} />
-                      </IconButton>
-                    )}
-                    <IconButton
-                      size="small"
-                      aria-label="Open calendar"
-                      onClick={onOpen}
-                      sx={{ color: "text.secondary" }}
-                    >
-                      <CalendarTodayIcon sx={{ fontSize: 16 }} />
-                    </IconButton>
-                  </InputActions>
-                </InputAdornment>
-              }
-              sx={{
-                ...inputSx,
-                borderTopLeftRadius: 0,
-                borderBottomLeftRadius: 0,
-              }}
+              inputMode={inputMode}
+              onClick={handleInputClick("end")}
             />
-          </FormControl>
-        </Box>
-      </Box>
+            <InputActions>
+              {range && (
+                <button
+                  type="button"
+                  className="dp-icon-button"
+                  aria-label="Clear date range"
+                  disabled={disabled}
+                  onClick={onClear}
+                >
+                  ×
+                </button>
+              )}
+              <button
+                type="button"
+                className="dp-icon-button"
+                aria-label="Open calendar"
+                disabled={disabled}
+                onClick={onOpen}
+              >
+                ◷
+              </button>
+            </InputActions>
+          </div>
+        </div>
+      </div>
     );
   },
 );

@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useOverlayTrigger } from "react-aria";
-import { useOverlayTriggerState } from "react-stately";
-import { Button, Divider, Popover } from "@mui/material";
 import {
   CalendarDate,
+  CalendarDateTime,
   Time,
   endOfMonth,
   getLocalTimeZone,
@@ -20,9 +18,9 @@ import {
   PopoverContent,
   TimeRow,
 } from "../DateRangePicker/styled";
+import { usePopover } from "../DateRangePicker/usePopover";
 import { combineDateTime } from "../DateRangePicker/utils";
 import type { CalendarView } from "../DateRangePicker/types";
-import { CalendarDateTime } from "@internationalized/date";
 import { DateInput } from "./DateInput";
 import type { DatePickerProps, DateValue } from "./types";
 
@@ -70,12 +68,8 @@ export function DatePicker(props: DatePickerProps) {
   /* ------------------------------------------------------------------ */
 
   const triggerRef = useRef<HTMLDivElement>(null);
-  const popoverState = useOverlayTriggerState({});
-  const { triggerProps } = useOverlayTrigger(
-    { type: "dialog" },
-    popoverState,
-    triggerRef,
-  );
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const popoverState = usePopover(triggerRef, popoverRef);
 
   /* ------------------------------------------------------------------ */
   /* Draft state inside the popover                                     */
@@ -218,9 +212,8 @@ export function DatePicker(props: DatePickerProps) {
     <>
       <div
         ref={triggerRef}
-        aria-haspopup={triggerProps["aria-haspopup"]}
-        aria-expanded={triggerProps["aria-expanded"]}
-        aria-controls={triggerProps["aria-controls"]}
+        aria-haspopup="dialog"
+        aria-expanded={popoverState.isOpen}
       >
         <DateInput
           value={currentValue}
@@ -236,24 +229,8 @@ export function DatePicker(props: DatePickerProps) {
         />
       </div>
 
-      <Popover
-        open={popoverState.isOpen}
-        anchorEl={triggerRef.current}
-        onClose={popoverState.close}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        transformOrigin={{ vertical: "top", horizontal: "left" }}
-        slotProps={{
-          paper: {
-            sx: {
-              mt: 0.5,
-              borderRadius: 2,
-              overflow: "hidden",
-              boxShadow:
-                "0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.08)",
-            },
-          },
-        }}
-      >
+      {popoverState.isOpen && (
+      <div ref={popoverRef} className="dp-popover" role="dialog">
         <PopoverContent>
           <PopoverBody>
             <div>
@@ -286,7 +263,7 @@ export function DatePicker(props: DatePickerProps) {
               </Calendars>
               {showTime && (
                 <>
-                  <Divider />
+                  <div className="dp-divider" />
                   <TimeRow>
                     <TimePicker
                       label="Time"
@@ -298,30 +275,34 @@ export function DatePicker(props: DatePickerProps) {
               )}
             </div>
           </PopoverBody>
-          <Divider />
+          <div className="dp-divider" />
           <Footer>
-            <Button
-              size="small"
+            <button
+              type="button"
+              className="dp-action-button dp-action-button-muted"
               onClick={handleClearInPopover}
-              sx={{ color: "text.secondary" }}
             >
               Clear
-            </Button>
-            <Button size="small" onClick={popoverState.close}>
+            </button>
+            <button
+              type="button"
+              className="dp-action-button"
+              onClick={popoverState.close}
+            >
               Cancel
-            </Button>
-            <Button
-              size="small"
-              variant="contained"
-              disableElevation
+            </button>
+            <button
+              type="button"
+              className="dp-action-button dp-action-button-primary"
               onClick={handleApply}
               disabled={!draftDate}
             >
               Apply
-            </Button>
+            </button>
           </Footer>
         </PopoverContent>
-      </Popover>
+      </div>
+      )}
     </>
   );
 }

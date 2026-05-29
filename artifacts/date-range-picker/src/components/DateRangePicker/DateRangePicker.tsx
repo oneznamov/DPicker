@@ -1,7 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useOverlayTrigger } from "react-aria";
-import { useOverlayTriggerState } from "react-stately";
-import { Button, Divider, Popover } from "@mui/material";
 import {
   CalendarDate,
   Time,
@@ -29,6 +26,7 @@ import {
   extractTimePair,
   orderRange,
 } from "./utils";
+import { usePopover } from "./usePopover";
 import {
   Calendars,
   Footer,
@@ -40,9 +38,9 @@ import {
 const yearPageStart = (year: number) => Math.floor(year / 12) * 12;
 
 /**
- * MUI v7 + react-aria + @internationalized/date range picker.
+ * React + CSS + @internationalized/date range picker.
  *
- * Mirrors MUI X DateRangePicker Pro behavior:
+ * Familiar date-range picker behavior:
  *   - Two month calendars side by side
  *   - Click month/year header to switch into month/year picker
  *   - Optional preset shortcuts column
@@ -89,12 +87,8 @@ export function DateRangePicker(props: DateRangePickerProps) {
   /* ------------------------------------------------------------------ */
 
   const triggerRef = useRef<HTMLDivElement>(null);
-  const popoverState = useOverlayTriggerState({});
-  const { triggerProps } = useOverlayTrigger(
-    { type: "dialog" },
-    popoverState,
-    triggerRef,
-  );
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const popoverState = usePopover(triggerRef, popoverRef);
 
   // Signals which side opened the calendar (set before popoverState.open()).
   // The reset effect reads this ref on the first render after opening.
@@ -350,9 +344,8 @@ export function DateRangePicker(props: DateRangePickerProps) {
     <>
       <div
         ref={triggerRef}
-        aria-haspopup={triggerProps["aria-haspopup"]}
-        aria-expanded={triggerProps["aria-expanded"]}
-        aria-controls={triggerProps["aria-controls"]}
+        aria-haspopup="dialog"
+        aria-expanded={popoverState.isOpen}
       >
         <DateRangeInput
           range={currentValue}
@@ -373,24 +366,8 @@ export function DateRangePicker(props: DateRangePickerProps) {
         />
       </div>
 
-      <Popover
-        open={popoverState.isOpen}
-        anchorEl={triggerRef.current}
-        onClose={popoverState.close}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        transformOrigin={{ vertical: "top", horizontal: "left" }}
-        slotProps={{
-          paper: {
-            sx: {
-              mt: 0.5,
-              borderRadius: 2,
-              overflow: "hidden",
-              boxShadow:
-                "0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.08)",
-            },
-          },
-        }}
-      >
+      {popoverState.isOpen && (
+      <div ref={popoverRef} className="dp-popover" role="dialog">
         <PopoverContent>
           <PopoverBody>
             {showPresets && (
@@ -429,7 +406,7 @@ export function DateRangePicker(props: DateRangePickerProps) {
                   onHoverDate={setHoveredDate}
                   onFocusChange={handleFocusChange}
                 />
-                <Divider orientation="vertical" flexItem />
+                <div className="dp-divider-vertical" />
                 <CalendarPanel
                   visibleMonth={rightMonth}
                   view={rightView}
@@ -460,7 +437,7 @@ export function DateRangePicker(props: DateRangePickerProps) {
               </Calendars>
               {showTime && (
                 <>
-                  <Divider />
+                  <div className="dp-divider" />
                   <TimeRow>
                     <TimePicker
                       label="Start"
@@ -481,30 +458,34 @@ export function DateRangePicker(props: DateRangePickerProps) {
               )}
             </div>
           </PopoverBody>
-          <Divider />
+          <div className="dp-divider" />
           <Footer>
-            <Button
-              size="small"
+            <button
+              type="button"
+              className="dp-action-button dp-action-button-muted"
               onClick={handleClearInPopover}
-              sx={{ color: "text.secondary" }}
             >
               Clear
-            </Button>
-            <Button size="small" onClick={popoverState.close}>
+            </button>
+            <button
+              type="button"
+              className="dp-action-button"
+              onClick={popoverState.close}
+            >
               Cancel
-            </Button>
-            <Button
-              size="small"
-              variant="contained"
-              disableElevation
+            </button>
+            <button
+              type="button"
+              className="dp-action-button dp-action-button-primary"
               onClick={handleApply}
               disabled={!draftRange}
             >
               Apply
-            </Button>
+            </button>
           </Footer>
         </PopoverContent>
-      </Popover>
+      </div>
+      )}
     </>
   );
 }

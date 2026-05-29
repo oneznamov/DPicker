@@ -151,7 +151,7 @@ export function CalendarGrid(props: CalendarGridProps) {
       onKeyDown={handleKeyDown}
       onMouseLeave={() => onHover(null)}
     >
-      <WeekRow sx={{ mb: 0.5 }}>
+      <WeekRow className="dp-week-row-head">
         {weekdayLabels.map((d, i) => (
           <WeekDayCell key={i}>{d}</WeekDayCell>
         ))}
