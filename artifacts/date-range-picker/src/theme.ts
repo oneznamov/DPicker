@@ -1,0 +1,31 @@
+import { createTheme } from "@mui/material/styles";
+
+export const theme = createTheme({
+  palette: {
+    mode: "light",
+    primary: {
+      main: "#1976d2",
+    },
+    background: {
+      default: "#f5f6f8",
+      paper: "#ffffff",
+    },
+  },
+  typography: {
+    fontFamily:
+      "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+  },
+  shape: {
+    borderRadius: 8,
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+          fontWeight: 500,
+        },
+      },
+    },
+  },
+});

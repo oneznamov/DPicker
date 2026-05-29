@@ -1,0 +1,89 @@
+{
+  "name": "dpicker",
+  "version": "0.1.0",
+  "description": "Lightweight, customizable React date and date-range pickers built with MUI, React Aria, and @internationalized/date.",
+  "license": "MIT",
+  "author": "fuji2003",
+  "homepage": "https://fuji2003.github.io/DPicker/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fuji2003/DPicker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fuji2003/DPicker/issues"
+  },
+  "keywords": [
+    "react",
+    "datepicker",
+    "date-picker",
+    "date-range-picker",
+    "calendar",
+    "mui",
+    "react-aria",
+    "typescript",
+    "temporal"
+  ],
+  "private": false,
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./date-picker": {
+      "types": "./dist/date-picker.d.ts",
+      "import": "./dist/date-picker.js",
+      "require": "./dist/date-picker.cjs"
+    },
+    "./date-range-picker": {
+      "types": "./dist/date-range-picker.d.ts",
+      "import": "./dist/date-range-picker.js",
+      "require": "./dist/date-range-picker.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite --config vite.config.ts --host 0.0.0.0",
+    "build": "vite build --config vite.lib.config.ts && tsc -p tsconfig.build.json",
+    "build:demo": "vite build --config vite.config.ts --base /DPicker/",
+    "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@internationalized/date": "^3.12.0",
+    "@mui/icons-material": "^7.3.0",
+    "@mui/material": "^7.3.0",
+    "react": ">=18",
+    "react-aria": "^3.48.0",
+    "react-dom": ">=18",
+    "react-stately": "^3.46.0"
+  },
+  "devDependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@internationalized/date": "^3.12.1",
+    "@mui/icons-material": "^7.3.10",
+    "@mui/material": "^7.3.10",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "react": "catalog:",
+    "react-aria": "^3.48.0",
+    "react-dom": "catalog:",
+    "react-stately": "^3.46.0",
+    "typescript": "~5.9.2",
+    "vite": "catalog:"
+  }
+}
